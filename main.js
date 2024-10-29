@@ -112,8 +112,6 @@ class Editor{
         });
         this.previewCanvas.addEventListener('mouseleave', function(e){
             context.cursor.ativo = false;
-            //context.cursor.desenhando = false;
-            //context.cursor.apagando = false;
         });
         //Quando prescionar botão do mouse
         this.previewCanvas.addEventListener('mousedown', function(evento){
