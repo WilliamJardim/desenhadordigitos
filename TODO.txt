@@ -1,4 +1,6 @@
 
+IDEIA: Criar uma opção na tela para redimensionar a matrix, digitando o número e clicando num botao 
+
 IDEIA: Criar algorimo que reforça o valor dos pixels,
 por exemplos onde tiver pixels bem fracos, ele deixa o valor do pixel como 1
 e onde os pixels tiverem muito fracos, ele vai reforçar ao redor, pra deixar mais grossos os desenhos
