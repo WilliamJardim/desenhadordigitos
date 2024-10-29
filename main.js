@@ -218,6 +218,14 @@ class Editor{
 
         context.criarEventos();
 
+        function isMobile() {
+            return /Mobi|Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+        }
+
+        if( isMobile() ){
+            context.criarEventosMobile();
+        }
+
         this.onDesenhar.bind(this)();
 
     }
@@ -297,6 +305,76 @@ class Editor{
             // Atualiza a posição do cursor no contexto
             context.cursor.X = parseInt(X);
             context.cursor.Y = parseInt(Y);
+        });
+    }
+
+    criarEventosMobile(){
+        const context = this;
+
+        this.previewCanvas.addEventListener('touchstart', function(e) {
+            context.cursor.ativo = true;
+            e.preventDefault();
+        });
+        this.previewCanvas.addEventListener('touchend', function(e) {
+            context.cursor.ativo = false;
+            e.preventDefault();
+        });
+
+        // Evento de pressionar o botão do mouse ou toque
+        const iniciarDesenho = (evento, button = 0) => {
+            if (button === 0 || evento.touches) {
+                context.cursor.desenhando = true;
+            } else if (button === 2) {
+                context.cursor.apagando = true;
+            }
+        };
+
+        this.previewCanvas.addEventListener('mousedown', function(evento) {
+            iniciarDesenho(evento, evento.button);
+        });
+        this.previewCanvas.addEventListener('touchstart', function(evento) {
+            iniciarDesenho(evento);
+        });
+
+        // Evento de soltar o botão do mouse ou término do toque
+        const finalizarDesenho = (evento, button = 0) => {
+            if (button === 0 || evento.changedTouches) {
+                context.cursor.desenhando = false;
+            } else if (button === 2) {
+                context.cursor.apagando = false;
+            }
+        };
+
+        this.previewCanvas.addEventListener('mouseup', function(evento) {
+            finalizarDesenho(evento, evento.button);
+        });
+        this.previewCanvas.addEventListener('touchend', function(evento) {
+            finalizarDesenho(evento);
+        });
+
+        // Movimento do mouse ou toque
+        const atualizarPosicaoCursor = (e) => {
+            const rect = context.previewCanvas.getBoundingClientRect();
+            const scaleX = context.previewCanvas.width / rect.width;
+            const scaleY = context.previewCanvas.height / rect.height;
+
+            let X, Y;
+            if (e.touches) {
+                X = (e.touches[0].clientX - rect.left) * scaleX;
+                Y = (e.touches[0].clientY - rect.top) * scaleY;
+            } else {
+                X = (e.clientX - rect.left) * scaleX;
+                Y = (e.clientY - rect.top) * scaleY;
+            }
+
+            context.cursor.X = parseInt(X);
+            context.cursor.Y = parseInt(Y);
+        };
+
+        this.previewCanvas.addEventListener('mousemove', atualizarPosicaoCursor);
+        this.previewCanvas.addEventListener('touchmove', function(e) {
+            atualizarPosicaoCursor(e);
+            e.preventDefault();
         });
     }
 
