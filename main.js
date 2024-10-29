@@ -398,6 +398,16 @@ class Editor{
         return resizedMatrix;
     }
 
+    //Pode ser usado para deixar os pixels mais fortes, apenas reforçando o valor dos pixels
+    reforcarPixels(p){ 
+        return p.map( (h)=>{ return h.map( (j)=>{ return (j*j*1000) } ) } ) 
+    }
+
+    //Aplica rapidamente um reforço de pixels na propia imagem da instancia
+    aplicarReforcoPixels(){
+        this.loadImage( this.reforcarPixels( this.getImage() ) );
+    }
+
     //Define um ponto na matrix resultante
     setMatrix( X, Y, valor, preencherWidth, preencherHeight ){
         if( this.matrix[X] == undefined ){return}; //Evita erros 
