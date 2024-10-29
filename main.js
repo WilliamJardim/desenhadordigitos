@@ -23,6 +23,19 @@ class Editor{
             if( !config.cursor.forcaBorracha ){ config.cursor.forcaBorracha = 0.5 };
         }
 
+        if( config.limites == undefined ){
+            config.limites = {
+                crescimento: 1,
+                decremento:  0
+            }
+
+        }else{
+            //Cursor com alguns valores padrão 
+            if( !config.limites.crescimento ){ config.limites.crescimento = 1 };
+            if( !config.limites.decremento ){  config.limites.decremento  = 0 };
+        }
+        this.limites = config.limites;    
+    
         this.resolucao                   = config.resolucao;
         this.top                         = config.top  || 0;
         this.left                        = config.left || 0;
@@ -149,9 +162,10 @@ class Editor{
         const cursor          = this.getCursor();
         const drawContext     = this.drawCanvasRef.getContext('2d');
         const previewContext  = this.previewCanvasRef.getContext('2d');
+        const cursorOpacity   = cursor.opacity <= this.limites.crescimento ? cursor.opacity : this.limites.crescimento;
 
         previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
-        previewContext.fillStyle = `rgba(0,0,0, ${cursor.opacity})`;
+        previewContext.fillStyle = `rgba(0,0,0, ${ cursorOpacity } )`;
         previewContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
         //Ao desenhar
@@ -159,11 +173,14 @@ class Editor{
             previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
 
             //Desenha na tela
-            drawContext.fillStyle = `rgba(0,0,0, ${cursor.opacity})`;
+            drawContext.fillStyle = `rgba(0,0,0, ${ cursorOpacity })`;
             drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
             //Insere na matrix
             this.matrix[ cursor.X ][ cursor.Y ] += cursor.opacity;
+
+            //Não permite que o valor do pixel seja maior do que o valor limite
+            if( this.matrix[ cursor.X ][ cursor.Y ] > this.limites.crescimento ){ this.matrix[ cursor.X ][ cursor.Y ] = this.limites.crescimento };
             
         }
 
@@ -181,7 +198,7 @@ class Editor{
             this.matrix[ cursor.X ][ cursor.Y ] -= potenciaDeletar;
 
             //Não permite que o valor do pixel seja menor do que zero
-            if( this.matrix[ cursor.X ][ cursor.Y ] < 0 ){ this.matrix[ cursor.X ][ cursor.Y ] = 0 };
+            if( this.matrix[ cursor.X ][ cursor.Y ] < this.limites.decremento ){ this.matrix[ cursor.X ][ cursor.Y ] = this.limites.decremento };
         }
 
         //Cria um loop infinito
@@ -260,5 +277,11 @@ const editor = new Editor({
         height: 10,
         opacity: 0.4,
         forcaBorracha: 0.5
+    },
+
+    //Limita quais serão a faixa de valores dos pixels a serem desenhados
+    limites: {
+        crescimento: 1,
+        decremento:  0
     }
 });
