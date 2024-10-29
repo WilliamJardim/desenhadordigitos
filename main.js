@@ -147,7 +147,7 @@ class Editor{
         }
 
         this.botaoExcluirImagem = document.createElement('button');
-        this.botaoExcluirImagem.setAttribute('class', 'botao');
+        this.botaoExcluirImagem.setAttribute('class', 'botao botao-excluir');
         this.divFerramentas.appendChild(this.botaoExcluirImagem);
         this.botaoExcluirImagem.append('X')
         this.botaoExcluirImagem.style.width = '90px';

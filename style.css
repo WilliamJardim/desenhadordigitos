@@ -28,11 +28,23 @@ button {
     background: linear-gradient(145deg, rgba(0, 255, 204, 0.15), rgba(0, 255, 204, 0.05)) !important;;
     color: #00ffcc !important;
     transition: background 0.3s, box-shadow 0.3s;
+    font-size: 28pt !important;
+    font-weight: bolder;
 }
 
 button:hover {
     background: rgba(0, 255, 204, 0.2) !important;
     box-shadow: 0 0 25px rgba(0, 255, 204, 0.7), inset 0 0 10px rgba(0, 255, 204, 0.3);
+}
+
+button.botao-excluir{
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5), inset 0 0 5px rgba(192, 0, 0, 0.3);
+    background: linear-gradient(145deg, rgba(212, 0, 0, 0.15), rgba(255, 38, 0, 0.05)) !important;;
+    color: #ffffff !important;
+}
+button.botao-excluir:hover{
+    background: rgba(255, 16, 16, 0.2) !important;
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.7), inset 0 0 10px rgba(182, 0, 0, 0.3);
 }
 
 @keyframes neonPulse {
