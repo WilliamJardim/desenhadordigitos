@@ -22,4 +22,5 @@ Adicionar função de apagar pixels
 (ALTERAR RESOLUÇÂO DINAMICAMENTE)
 Adicionar botoes para aumentar ou diminuir a RESOLUÇÂO
 
-
+(MOVER EDITOR)
+Adicionar uma função pra mover o editor na tela
