@@ -1,0 +1,14 @@
+{
+  "name": "desenhadordigitos",
+  "version": "1.0.0",
+  "main": "main.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "William Alves Jardim",
+  "license": "MIT",
+  "description": "Permite desenhar digitos escritos a mao"
+}
