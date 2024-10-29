@@ -1,13 +1,17 @@
 class Editor{
-    constructor( resolucao=600 ){
-        this.resolucao                   = resolucao;
+    constructor( config={} ){
+        if( !config.resolucao ){ throw 'propriedade "resolucao" é obrigatória!' };
+
+        this.resolucao                   = config.resolucao;
+        this.top                         = config.top  || 0;
+        this.left                        = config.left || 0;
 
         this.drawCanvas                  = document.createElement('canvas');
         this.drawCanvas.setAttribute('id', String(new Date().getTime()));
         this.drawCanvas.setAttribute('class', 'canvas-draw');
         this.drawCanvas.style.position = "absolute";
-        this.drawCanvas.style.top = "0px";
-        this.drawCanvas.style.left = "0px";
+        this.drawCanvas.style.top = `${ this.top }px`;
+        this.drawCanvas.style.left = `${ this.left }px`;
         this.drawCanvas.style.zIndex = 1;
         this.drawCanvas.style.border = "solid 4px black";
 
@@ -15,8 +19,8 @@ class Editor{
         this.previewCanvas.setAttribute('id', String(new Date().getTime()));
         this.previewCanvas.setAttribute('class', 'canvas-preview');
         this.previewCanvas.style.position = "absolute";
-        this.previewCanvas.style.top = "0px";
-        this.previewCanvas.style.left = "0px";
+        this.previewCanvas.style.top = `${ this.top }px`;
+        this.previewCanvas.style.left = `${ this.left }px`;
         this.previewCanvas.style.zIndex = 22;
         this.previewCanvas.style.border = "solid 4px black";
         this.previewCanvas.style.backgroundColor = "rgba(0,0,0,0)";
@@ -24,10 +28,10 @@ class Editor{
         document.body.prepend(this.drawCanvas);
         document.body.prepend(this.previewCanvas);
 
-        this.drawCanvas.style.width      = `${resolucao}px`;
-        this.drawCanvas.style.height     = `${resolucao}px`;
-        this.previewCanvas.style.width   = `${resolucao}px`;
-        this.previewCanvas.style.height  = `${resolucao}px`;
+        this.drawCanvas.style.width      = `${this.resolucao}px`;
+        this.drawCanvas.style.height     = `${this.resolucao}px`;
+        this.previewCanvas.style.width   = `${this.resolucao}px`;
+        this.previewCanvas.style.height  = `${this.resolucao}px`;
 
         this.matrix = [];
         this.previewCanvasRef = this.previewCanvas;
@@ -45,8 +49,8 @@ class Editor{
         };
 
         //Cria uma imagem base
-        this.width = resolucao;
-        this.height = resolucao;
+        this.width = this.resolucao;
+        this.height = this.resolucao;
         this.newImage( this.width, this.height );
 
         //Eventos
@@ -74,13 +78,6 @@ class Editor{
             context.cursor.desenhando = false;
         });
         this.previewCanvas.addEventListener('mousemove', function(e){
-            /*
-            const X = e.clientX;
-            const Y = e.clientY;
-
-            context.cursor.X = X;
-            context.cursor.Y = Y;
-            */
             const rect = context.previewCanvas.getBoundingClientRect();
 
             // Calcula a posição correta, considerando a escala do canvas
@@ -182,4 +179,8 @@ class Editor{
     }
 }
 
-const editor = new Editor(600);
+const editor = new Editor({
+    resolucao: 512,
+    top: 0,
+    left: window.innerWidth/2
+});
