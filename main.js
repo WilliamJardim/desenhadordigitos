@@ -10,6 +10,7 @@ class Editor{
         if( config.cursor == undefined ){
             //Cursor com tudo padrão 
             config.cursor = {
+                color: 'black',
                 X: 0,
                 Y: 0,
                 width: 10,
@@ -21,6 +22,7 @@ class Editor{
 
         }else{
             //Cursor com alguns valores padrão 
+            if( !config.cursor.color ){ config.cursor.color = 'black' };
             if( !config.cursor.X ){ config.cursor.X = 0 };
             if( !config.cursor.Y ){ config.cursor.Y = 0 };
             if( !config.cursor.width ){ config.cursor.width = 10 };
@@ -193,6 +195,7 @@ class Editor{
 
         //Mouse
         this.cursor = {
+            color: config.cursor.color || 'black',
             X: config.cursor.X || 0,
             Y: config.cursor.Y || 0,
             width: config.cursor.width || 10,
@@ -456,6 +459,7 @@ class Editor{
 
     onDesenhar(){
         
+        const rgbString       = ( this.cursor.color || 'rgb(0,0,0)').split('rgb(')[1].replace(')', '');
         const cursor          = this.getCursor();
         const drawContext     = this.drawCanvasRef.getContext('2d');
         const previewContext  = this.previewCanvasRef.getContext('2d');
@@ -463,7 +467,7 @@ class Editor{
         const clearRate       = (50/100*parseInt(this.previewCanvasRef.style.width)) * (-0.5 * -this.resolucao);
 
         previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + clearRate, parseInt(this.previewCanvasRef.style.height) );
-        previewContext.fillStyle = `rgba(0,0,0, ${ cursorOpacity } )`;
+        previewContext.fillStyle = `rgba(${rgbString}, ${ cursorOpacity } )`;
         previewContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
         //Ao desenhar
@@ -471,7 +475,7 @@ class Editor{
             previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
 
             //Desenha na tela
-            drawContext.fillStyle = `rgba(0,0,0, ${ cursorOpacity })`;
+            drawContext.fillStyle = `rgba(${rgbString}, ${ cursorOpacity })`;
             drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
             //Insere na matrix
@@ -534,6 +538,7 @@ class Editor{
     */
     loadImage( imageMatrix ){
         const cursor          = this.getCursor();
+        const rgbString       = ( this.cursor.color || 'rgb(0,0,0)').split('rgb(')[1].replace(')', '');
         const imageWidth      = this.matrix.length;
         const imageHeight     = this.matrix[0].length;
         const drawContext     = this.drawCanvasRef.getContext('2d');
@@ -551,7 +556,7 @@ class Editor{
                 //Se tem pixels
                 if( imageMatrix[linha][coluna] > this.valorFundo ){
                     //Desenha na tela
-                    drawContext.fillStyle = `rgba(0,0,0, ${ 
+                    drawContext.fillStyle = `rgba(${rgbString}, ${ 
 
                         valorPixel >= 0 ? (valorPixel > this.limites.crescimento ? this.limites.crescimento : valorPixel) //Se for positivo
                                         : (valorPixel < this.limites.decremento  ? this.limites.decremento  : valorPixel) //Se for negativo
@@ -589,6 +594,7 @@ const editor = new Editor({
 
     //Configurações iniciais do cursor
     cursor: {
+        color: 'rgb(255,255,255)',
         X: 0,
         Y: 0,
         width: 5,
