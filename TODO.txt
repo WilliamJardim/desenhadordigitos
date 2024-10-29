@@ -1,3 +1,9 @@
+
+IDEIA: Criar algorimo que reforça o valor dos pixels,
+por exemplos onde tiver pixels bem fracos, ele deixa o valor do pixel como 1
+e onde os pixels tiverem muito fracos, ele vai reforçar ao redor, pra deixar mais grossos os desenhos
+
+
 IDEIA DE ALGORITMO DE CORTE
 onde tiver muito espaços vagos zerados, ao redor do desenho, ele vai remover esses espaços,
 então se fosse resoluções 1000x1000, e o desenho só ocupasse 200x200, então, todo o resto seria meticulosamente cortado para não incluir os espaços zerados desnecessarios
