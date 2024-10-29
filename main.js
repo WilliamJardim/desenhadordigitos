@@ -157,6 +157,17 @@ class Editor{
         });
     }
 
+    setMatrix( X, Y, valor ){
+        //Insere na matrix
+        this.matrix[ X ][ Y ] = valor;
+
+        //Não permite que o valor do pixel seja maior do que o valor limite
+        if( this.matrix[ X ][ Y ] >= this.limites.crescimento ){ this.matrix[ X ][ Y ] = this.limites.crescimento };
+
+        //Não permite que o valor do pixel seja menor do que zero
+        if( this.matrix[ X ][ Y ] < this.limites.decremento ){   this.matrix[ X ][ Y ] = this.limites.decremento };
+    }
+
     onDesenhar(){
 
         const cursor          = this.getCursor();
@@ -255,13 +266,7 @@ class Editor{
                 }
 
                 //Insere na matrix
-                this.matrix[ linha ][ coluna ] = valorPixel;
-
-                //Não permite que o valor do pixel seja maior do que o valor limite
-                if( this.matrix[ linha ][ coluna ] >= this.limites.crescimento ){ this.matrix[ linha ][ coluna ] = this.limites.crescimento };
-
-                //Não permite que o valor do pixel seja menor do que zero
-                if( this.matrix[ linha ][ coluna ] < this.limites.decremento ){ this.matrix[ linha ][ coluna ] = this.limites.decremento };
+                this.setMatrix( linha, coluna, valorPixel );
             }
         }
     }
