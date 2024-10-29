@@ -247,6 +247,10 @@ class Editor{
         }
     }
 
+    /**
+    * Carrega uma imagem
+    * @param {*} imageMatrix 
+    */
     loadImage( imageMatrix ){
         const cursor          = this.getCursor();
         const imageWidth      = this.matrix.length;
