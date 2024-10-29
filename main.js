@@ -1,5 +1,8 @@
 class Editor{
     constructor( config={} ){
+        //Callbacks
+        this.callbackEnviar = config.onEnviar || null;
+
         if( !config.resolucao ){ throw 'propriedade "resolucao" é obrigatória!' };
 
         if( config.cursor == undefined ){
@@ -132,6 +135,26 @@ class Editor{
         this.botaoExcluirImagem.onclick = function(){
             contexto.mudarResolucaoCanvas( contexto.resolucaoInicial );
             contexto.clearImage();
+        }
+
+        if( contexto.callbackEnviar )
+        {
+            this.botaoEnviarImagem = document.createElement('button');
+            this.botaoEnviarImagem.setAttribute('class', 'botao');
+            this.divFerramentas.appendChild(this.botaoEnviarImagem);
+            this.botaoEnviarImagem.append('ENVIAR')
+            this.botaoEnviarImagem.style.width = '180px';
+            this.botaoEnviarImagem.style.height = '80px';
+            this.botaoEnviarImagem.style.marginTop = '10px';
+            this.botaoEnviarImagem.style.marginLeft = '0px';
+            this.botaoEnviarImagem.style.backgroundColor = 'darkblue';
+            this.botaoEnviarImagem.style.color = 'white';
+            this.botaoEnviarImagem.style.fontSize = '20pt';
+            this.botaoEnviarImagem.onclick = function(){
+                contexto.callbackEnviar.bind(contexto)( contexto.getImage() );
+                contexto.mudarResolucaoCanvas( contexto.resolucaoInicial );
+                contexto.clearImage();
+            }
         }
 
         this.drawCanvas.style.width      = `${this.resolucao}px`;
@@ -436,5 +459,11 @@ const editor = new Editor({
     limites: {
         crescimento: 1,
         decremento:  0
+    },
+
+    //Quando o usuário enviar o desenho
+    onEnviar: function( desenho ){
+        console.log(desenho);
     }
+
 });
