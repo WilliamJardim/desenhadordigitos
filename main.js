@@ -357,7 +357,7 @@ class Editor{
         const previewContext  = this.previewCanvasRef.getContext('2d');
         const cursorOpacity   = cursor.opacity <= this.limites.crescimento ? cursor.opacity : this.limites.crescimento;
 
-        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
+        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + (50/100*parseInt(this.previewCanvasRef.style.width)), parseInt(this.previewCanvasRef.style.height) );
         previewContext.fillStyle = `rgba(0,0,0, ${ cursorOpacity } )`;
         previewContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
