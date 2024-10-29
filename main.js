@@ -67,6 +67,70 @@ class Editor{
         document.body.prepend(this.drawCanvas);
         document.body.prepend(this.previewCanvas);
 
+        //DIV para os botões 
+        this.divFerramentas = document.createElement('div');
+        this.divFerramentas.style.position = 'absolute';
+        document.body.prepend(this.divFerramentas);
+        this.divFerramentas.style.width  = `${this.resolucao}px`;
+        this.divFerramentas.style.height = `150px`;
+
+        let contexto = this;
+        setTimeout(function(){
+            contexto.divFerramentas.style.top = `${ contexto.top + 180 + parseInt(contexto.divFerramentas.style.height) }px`;
+        }, 200);
+
+        this.divFerramentas.style.left = `${ this.left }px`;
+        this.divFerramentas.style.backgroundColor = 'white'
+        this.divFerramentas.style.zIndex = 40;
+        
+        //Botoes
+        this.botaoAumentarResolucao = document.createElement('button');
+        this.botaoAumentarResolucao.setAttribute('class', 'botao');
+        this.divFerramentas.appendChild(this.botaoAumentarResolucao);
+        this.botaoAumentarResolucao.append('+')
+        this.botaoAumentarResolucao.style.width = '90px';
+        this.botaoAumentarResolucao.style.height = '80px';
+        this.botaoAumentarResolucao.style.color = 'black';
+        this.botaoAumentarResolucao.style.fontSize = '20pt';
+        this.botaoAumentarResolucao.onclick = function(){
+            contexto.resolucao += 100;
+            contexto.drawCanvas.style.width = String(parseInt(contexto.drawCanvas.style.width) + 100) + 'px';
+            contexto.drawCanvas.style.height = String(parseInt(contexto.drawCanvas.style.height) + 100) + 'px';
+            contexto.previewCanvas.style.width = String(parseInt(contexto.previewCanvas.style.width) + 100) + 'px';
+            contexto.previewCanvas.style.height = String(parseInt(contexto.previewCanvas.style.height) + 100) + 'px';
+        }
+
+        this.botaoDiminuirResolucao = document.createElement('button');
+        this.botaoDiminuirResolucao.setAttribute('class', 'botao');
+        this.divFerramentas.appendChild(this.botaoDiminuirResolucao);
+        this.botaoDiminuirResolucao.append('-')
+        this.botaoDiminuirResolucao.style.width = '90px';
+        this.botaoDiminuirResolucao.style.height = '80px';
+        this.botaoDiminuirResolucao.style.marginLeft = '10px';
+        this.botaoDiminuirResolucao.style.color = 'black';
+        this.botaoDiminuirResolucao.style.fontSize = '20pt';
+        this.botaoDiminuirResolucao.onclick = function(){
+            contexto.resolucao -= 100;
+            contexto.drawCanvas.style.width = String(parseInt(contexto.drawCanvas.style.width) - 100) + 'px';
+            contexto.drawCanvas.style.height = String(parseInt(contexto.drawCanvas.style.height) - 100) + 'px';
+            contexto.previewCanvas.style.width = String(parseInt(contexto.previewCanvas.style.width) - 100) + 'px';
+            contexto.previewCanvas.style.height = String(parseInt(contexto.previewCanvas.style.height) - 100) + 'px';
+        }
+
+        this.botaoExcluirImagem = document.createElement('button');
+        this.botaoExcluirImagem.setAttribute('class', 'botao');
+        this.divFerramentas.appendChild(this.botaoExcluirImagem);
+        this.botaoExcluirImagem.append('X')
+        this.botaoExcluirImagem.style.width = '90px';
+        this.botaoExcluirImagem.style.height = '80px';
+        this.botaoExcluirImagem.style.marginLeft = '10px';
+        this.botaoExcluirImagem.style.backgroundColor = 'darkred';
+        this.botaoExcluirImagem.style.color = 'white';
+        this.botaoExcluirImagem.style.fontSize = '20pt';
+        this.botaoExcluirImagem.onclick = function(){
+            contexto.clearImage();
+        }
+
         this.drawCanvas.style.width      = `${this.resolucao}px`;
         this.drawCanvas.style.height     = `${this.resolucao}px`;
         this.previewCanvas.style.width   = `${this.resolucao}px`;
