@@ -310,7 +310,16 @@ class Editor{
         return X >= 0 && X < this.matrix.length && Y >= 0 && Y < this.matrix[0].length;
     }
 
-    //Redimenciona uma matrix
+    /**
+    * Redimenciona uma matrix
+    * Por exemplo, Ao receber uma imagem em preto e branco em forma de matrix 500x500, podemos obter uma nova matrix equivalente porém na resoluçao 100x100, 
+    * Com exatamente o mesmo conteudo só que convertido para uma resolução menor
+    * 
+    * @param {*} matrix 
+    * @param {*} oldSize 
+    * @param {*} newSize 
+    * @returns 
+    */
     resizeMatrix(matrix, oldSize, newSize) {
         const scale = oldSize / newSize;
         const newMatrix = Array.from({ length: newSize }, () => Array(newSize).fill(0));
@@ -332,6 +341,61 @@ class Editor{
         }
     
         return newMatrix;
+    }
+
+    /**
+    * Um código que faz um corte em aréas que estão com valor zero no pixel, 
+    * por exemplo, se eu tenho uma iamgem de resolução 1000x1000, ai eu faço um desenho no topo esquerdo dela, de tamanh 200x200,... 
+    * vai ficar sobrando um montão de pixels zerados ao redor, .. 
+    * Essa função iria cortar automaticamente esses pixels, mantendo apenas os pixels que estão a uns 5 de distancia dos pixels do desenho, e padronizando isso para uma matrix quadrada de NxN apenas com os pixels do desenho e mais 5 ao redor(de cada lado) que estiverem ao redor do desenho 
+    * @param {Number[][]} matrix  - A matrix a ser cortada
+    * @param {Number} margin      - Os pixels de distancia ao redor
+    * @param {Number} targetSize  - A resolução NxN de saida
+    * @returns 
+    */
+    cropAndPadMatrix(matrix, margin = 5, targetSize = 200) {
+        const rows = matrix.length;
+        const cols = matrix[0].length;
+    
+        // Encontra os limites do desenho
+        let top = rows, bottom = 0, left = cols, right = 0;
+    
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                if (matrix[i][j] !== 0) {
+                    top = Math.min(top, i);
+                    bottom = Math.max(bottom, i);
+                    left = Math.min(left, j);
+                    right = Math.max(right, j);
+                }
+            }
+        }
+    
+        // Adiciona a margem
+        top = Math.max(0, top - margin);
+        bottom = Math.min(rows - 1, bottom + margin);
+        left = Math.max(0, left - margin);
+        right = Math.min(cols - 1, right + margin);
+    
+        // Extrai a região de interesse com margem
+        const croppedMatrix = [];
+        for (let i = top; i <= bottom; i++) {
+            croppedMatrix.push(matrix[i].slice(left, right + 1));
+        }
+    
+        // Redimensiona a matriz para targetSize x targetSize
+        const scale = croppedMatrix.length / targetSize;
+        const resizedMatrix = Array.from({ length: targetSize }, () => Array(targetSize).fill(0));
+    
+        for (let i = 0; i < targetSize; i++) {
+            for (let j = 0; j < targetSize; j++) {
+                const x = Math.floor(i * scale);
+                const y = Math.floor(j * scale);
+                resizedMatrix[i][j] = croppedMatrix[x][y];
+            }
+        }
+    
+        return resizedMatrix;
     }
 
     //Define um ponto na matrix resultante
