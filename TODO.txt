@@ -24,3 +24,6 @@ Adicionar botoes para aumentar ou diminuir a RESOLUÇÂO
 
 (MOVER EDITOR)
 Adicionar uma função pra mover o editor na tela
+
+(REDIMENCIONAR RESULTADO)
+Adicionar propriedade de RESOLUÇÂO DA MATRIX RESULTADO, que permite redimensionar para uma matrix menor
