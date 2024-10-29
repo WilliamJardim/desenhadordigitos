@@ -18,6 +18,7 @@ exemplo
 
 (BORRACHA)
 Adicionar função de apagar pixels
+CORRIGIR O PROBLEMA QUE QUANDO APAGA OS PIXELS E DEPOIS SALVA E CARREGA A IMAGEM DE VOLTA, ele desenha como se não tivesse apagado
 
 (ALTERAR RESOLUÇÂO DINAMICAMENTE)
 Adicionar botoes para aumentar ou diminuir a RESOLUÇÂO
