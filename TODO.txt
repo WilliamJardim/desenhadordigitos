@@ -1,3 +1,5 @@
+AO EXPANDIR A RESOLUÇÂO PELOS BOTOES DE + e _ eu tambem preciso esticar a minha matrix para aumentar ela tambem em width e height
+
 (TAMANHO DA INSERÇÂO)
 Criar que de acordo com o tamanho do cursor, na matrix na hora de inserir o pixel, ele vai inserir quantas casas WIDTH e HEIGHT a partir do ponto de origem, o pixel ocupa
 isso vai permitir desenhos personalizados de acordo com o cursor

@@ -356,8 +356,9 @@ class Editor{
         const drawContext     = this.drawCanvasRef.getContext('2d');
         const previewContext  = this.previewCanvasRef.getContext('2d');
         const cursorOpacity   = cursor.opacity <= this.limites.crescimento ? cursor.opacity : this.limites.crescimento;
+        const clearRate       = (50/100*parseInt(this.previewCanvasRef.style.width)) * (-0.5 * -this.resolucao);
 
-        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + (50/100*parseInt(this.previewCanvasRef.style.width)), parseInt(this.previewCanvasRef.style.height) );
+        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + clearRate, parseInt(this.previewCanvasRef.style.height) );
         previewContext.fillStyle = `rgba(0,0,0, ${ cursorOpacity } )`;
         previewContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
@@ -403,10 +404,11 @@ class Editor{
     clearImage(){
         const drawContext     = this.drawCanvasRef.getContext('2d');
         const previewContext  = this.previewCanvasRef.getContext('2d');
+        const clearRate       = (50/100*parseInt(this.previewCanvasRef.style.width)) * (-0.5 * -this.resolucao); //Quando menor a resolução maior vai precisar ser a area de limpeza
     
         //Limpa tudo
-        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
-        drawContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
+        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + clearRate, parseInt(this.previewCanvasRef.style.height) );
+        drawContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + clearRate, parseInt(this.previewCanvasRef.style.height) );
         this.matrix = [];
         this.newImage( this.resolucao, this.resolucao );
     }
@@ -432,9 +434,10 @@ class Editor{
         const imageHeight     = this.matrix[0].length;
         const drawContext     = this.drawCanvasRef.getContext('2d');
         const previewContext  = this.previewCanvasRef.getContext('2d');
+        const clearRate       = (50/100*parseInt(this.previewCanvasRef.style.width)) * (-0.5 * -this.resolucao); //Quando menor a resolução maior vai precisar ser a area de limpeza
         
-        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
-        drawContext.clearRect(0,0, parseInt(this.drawCanvasRef.style.width), parseInt(this.drawCanvasRef.style.height) );
+        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width) + clearRate, parseInt(this.previewCanvasRef.style.height) );
+        drawContext.clearRect(0,0, parseInt(this.drawCanvasRef.style.width) + clearRate, parseInt(this.drawCanvasRef.style.height) );
 
         for( let linha = 0 ; linha < imageWidth ; linha++ ){
             for( let coluna = 0 ; coluna < imageHeight ; coluna++ ){
@@ -469,7 +472,7 @@ class Editor{
 }
 
 const editor = new Editor({
-    resolucao: 200,
+    resolucao: 300,
     top: 100,
     left: 100,
     titulo: 'Desenhe a letra W',
@@ -478,8 +481,8 @@ const editor = new Editor({
     cursor: {
         X: 0,
         Y: 0,
-        width: 5,
-        height: 5,
+        width: 10,
+        height: 10,
         insertionRate: 5, //Será inserido 5% do width e height do cursor na matrix, isso afeta a espessura de cada pixel 
         opacity: 0.4,
         forcaBorracha: 0.5
