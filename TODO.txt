@@ -1,3 +1,8 @@
+BUG: Em resoluções abaixo de 300x300, ele só consegue adicionar na matrix até a métade do texto, se eu tentar escrever algo
+isso muito provavelmente ocorre por causa que o indice da matrix não existe ai ele ignora mais não fala nada que deu errado
+
+por exemplo ao escrever william ficou apena Will 
+
 AO EXPANDIR A RESOLUÇÂO PELOS BOTOES DE + e _ eu tambem preciso esticar a minha matrix para aumentar ela tambem em width e height
 
 (TAMANHO DA INSERÇÂO)
