@@ -1,17 +1,26 @@
-const drawCanvas = document.getElementById('canvas-desenho');
-const previewCanvas = document.getElementById('canvas-preview');
-const resolucao = 600;
-
-drawCanvas.style.width = `${resolucao}px`;
-drawCanvas.style.height =  `${resolucao}px`;
-previewCanvas.style.width =  `${resolucao}px`;
-previewCanvas.style.height =  `${resolucao}px`;
-
 class Editor{
-    constructor( previewCanvasRef, drawCanvasRef ){
+    constructor( resolucao=600 ){
+        this.resolucao                   = resolucao;
+
+        this.drawCanvas                  = document.createElement('canvas');
+        this.drawCanvas.setAttribute('id', String(new Date().getTime()));
+        this.drawCanvas.setAttribute('class', 'canvas-draw');
+
+        this.previewCanvas               = document.createElement('canvas');
+        this.previewCanvas.setAttribute('id', String(new Date().getTime()));
+        this.previewCanvas.setAttribute('class', 'canvas-preview');
+
+        document.body.prepend(this.drawCanvas);
+        document.body.prepend(this.previewCanvas);
+
+        this.drawCanvas.style.width      = `${resolucao}px`;
+        this.drawCanvas.style.height     = `${resolucao}px`;
+        this.previewCanvas.style.width   = `${resolucao}px`;
+        this.previewCanvas.style.height  = `${resolucao}px`;
+
         this.matrix = [];
-        this.previewCanvasRef = previewCanvasRef;
-        this.drawCanvasRef    = drawCanvasRef;
+        this.previewCanvasRef = this.previewCanvas;
+        this.drawCanvasRef    = this.drawCanvas;
 
         //Mouse
         this.cursor = {
@@ -32,28 +41,34 @@ class Editor{
         //Eventos
         const context = this;
 
-        previewCanvas.addEventListener('mouseenter', function(e){
+        context.criarEventos();
+
+        this.onDesenhar.bind(this)();
+
+    }
+
+    criarEventos(){
+        const context = this;
+
+        this.previewCanvas.addEventListener('mouseenter', function(e){
             context.cursor.ativo = true;
         });
-        previewCanvas.addEventListener('mouseleave', function(e){
+        this.previewCanvas.addEventListener('mouseleave', function(e){
             context.cursor.ativo = false;
         });
-        previewCanvas.addEventListener('mousedown', function(e){
+        this.previewCanvas.addEventListener('mousedown', function(e){
             context.cursor.desenhando = true;
         });
-        previewCanvas.addEventListener('mouseup', function(e){
+        this.previewCanvas.addEventListener('mouseup', function(e){
             context.cursor.desenhando = false;
         });
-        previewCanvas.addEventListener('mousemove', function(e){
+        this.previewCanvas.addEventListener('mousemove', function(e){
             const X = e.clientX;
             const Y = e.clientY;
 
             context.cursor.X = X;
             context.cursor.Y = Y;
         });
-
-        this.onDesenhar.bind(this)();
-
     }
 
     onDesenhar(){
@@ -130,4 +145,4 @@ class Editor{
     }
 }
 
-const editor = new Editor(previewCanvas, drawCanvas);
+const editor = new Editor(600);

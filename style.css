@@ -1,10 +1,18 @@
 canvas{
-    position: absolute;
-    top: 0px;
-    left: 0px;
     border: solid 4px black;
 }
 
-#canvas-preview{
+.canvas-draw{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+.canvas-preview{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 40;
     background-color: rgba(0,0,0,0);
 }
