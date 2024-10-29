@@ -35,7 +35,8 @@ class Editor{
             if( !config.limites.decremento ){  config.limites.decremento  = 0 };
         }
         this.limites = config.limites;    
-    
+        this.valorFundo = config.valorFundo || 0;
+
         this.resolucao                   = config.resolucao;
         this.top                         = config.top  || 0;
         this.left                        = config.left || 0;
@@ -242,7 +243,7 @@ class Editor{
         for( let linha = 0 ; linha < width ; linha++ ){
             this.matrix[linha] = [];
             for( let coluna = 0 ; coluna < height ; coluna++ ){
-                this.matrix[linha][coluna] = 0;
+                this.matrix[linha][coluna] = this.valorFundo;
             }
         }
     }
@@ -266,8 +267,8 @@ class Editor{
 
                 const valorPixel = imageMatrix[linha][coluna];
 
-                //Se tem pixel
-                if( imageMatrix[linha][coluna] > 0 ){
+                //Se tem pixels
+                if( imageMatrix[linha][coluna] > this.valorFundo ){
                     //Desenha na tela
                     drawContext.fillStyle = `rgba(0,0,0, ${ 
 
@@ -309,6 +310,8 @@ const editor = new Editor({
     },
 
     //Limita quais serão a faixa de valores dos pixels a serem desenhados
+    valorFundo: 0,
+
     limites: {
         crescimento: 1,
         decremento:  0
