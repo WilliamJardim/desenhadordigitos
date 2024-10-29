@@ -408,6 +408,12 @@ class Editor{
         this.loadImage( this.reforcarPixels( this.getImage() ) );
     }
 
+    //Aplica rapidamente um redimensionamento na propia imagem da instancia
+    aplicarResize( novaResolucao=100 ){
+        this.aplicarReforcoPixels();
+        editor.loadImage( editor.resizeMatrix( editor.getImage(), this.resolucao, novaResolucao ) );
+    }
+
     //Define um ponto na matrix resultante
     setMatrix( X, Y, valor, preencherWidth, preencherHeight ){
         if( this.matrix[X] == undefined ){return}; //Evita erros 
