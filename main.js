@@ -245,12 +245,18 @@ class Editor{
                 //Se tem pixel
                 if( imageMatrix[linha][coluna] > 0 ){
                     //Desenha na tela
-                    drawContext.fillStyle = `rgba(0,0,0, ${ valorPixel > 1 ? 1 : valorPixel })`;
+                    drawContext.fillStyle = `rgba(0,0,0, ${ valorPixel > this.limites.crescimento ? this.limites.crescimento : valorPixel })`;
                     drawContext.fillRect(linha, coluna, cursor.width, cursor.height);
                 }
 
                 //Insere na matrix
                 this.matrix[ linha ][ coluna ] = valorPixel;
+
+                //Não permite que o valor do pixel seja maior do que o valor limite
+                if( this.matrix[ linha ][ coluna ] >= this.limites.crescimento ){ this.matrix[ linha ][ coluna ] = this.limites.crescimento };
+
+                //Não permite que o valor do pixel seja menor do que zero
+                if( this.matrix[ linha ][ coluna ] < this.limites.decremento ){ this.matrix[ linha ][ coluna ] = this.limites.decremento };
             }
         }
     }
