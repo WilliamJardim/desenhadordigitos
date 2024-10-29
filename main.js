@@ -245,7 +245,12 @@ class Editor{
                 //Se tem pixel
                 if( imageMatrix[linha][coluna] > 0 ){
                     //Desenha na tela
-                    drawContext.fillStyle = `rgba(0,0,0, ${ valorPixel > this.limites.crescimento ? this.limites.crescimento : valorPixel })`;
+                    drawContext.fillStyle = `rgba(0,0,0, ${ 
+
+                        valorPixel >= 0 ? (valorPixel > this.limites.crescimento ? this.limites.crescimento : valorPixel) //Se for positivo
+                                        : (valorPixel < this.limites.decremento  ? this.limites.decremento  : valorPixel) //Se for negativo
+
+                    })`;
                     drawContext.fillRect(linha, coluna, cursor.width, cursor.height);
                 }
 
