@@ -74,11 +74,26 @@ class Editor{
             context.cursor.desenhando = false;
         });
         this.previewCanvas.addEventListener('mousemove', function(e){
+            /*
             const X = e.clientX;
             const Y = e.clientY;
 
             context.cursor.X = X;
             context.cursor.Y = Y;
+            */
+            const rect = context.previewCanvas.getBoundingClientRect();
+
+            // Calcula a posição correta, considerando a escala do canvas
+            const scaleX = context.previewCanvas.width / rect.width;
+            const scaleY = context.previewCanvas.height / rect.height;
+        
+            // Obtém a posição do mouse em relação ao canvas
+            const X = (e.clientX - rect.left) * scaleX;
+            const Y = (e.clientY - rect.top) * scaleY;
+        
+            // Atualiza a posição do cursor no contexto
+            context.cursor.X = parseInt(X);
+            context.cursor.Y = parseInt(Y);
         });
     }
 
@@ -106,6 +121,17 @@ class Editor{
 
         //Cria um loop infinito
         requestAnimationFrame(this.onDesenhar.bind(this));
+    }
+
+    clearImage(){
+        const drawContext     = this.drawCanvasRef.getContext('2d');
+        const previewContext  = this.previewCanvasRef.getContext('2d');
+    
+        //Limpa tudo
+        previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
+        drawContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
+        this.matrix = [];
+        this.newImage( this.resolucao, this.resolucao );
     }
 
     newImage( width, height ){
