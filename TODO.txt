@@ -27,3 +27,6 @@ Adicionar uma função pra mover o editor na tela
 
 (REDIMENCIONAR RESULTADO)
 Adicionar propriedade de RESOLUÇÂO DA MATRIX RESULTADO, que permite redimensionar para uma matrix menor
+
+(CALLBACKS)
+Adicionar CALLBACKS personalizados
