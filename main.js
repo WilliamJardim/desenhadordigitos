@@ -36,6 +36,7 @@ class Editor{
             if( !config.limites.crescimento ){ config.limites.crescimento = 1 };
             if( !config.limites.decremento ){  config.limites.decremento  = 0 };
         }
+        this.config = config;
         this.limites = config.limites;    
         this.valorFundo = config.valorFundo || 0;
 
@@ -166,6 +167,12 @@ class Editor{
 
         this.onDesenhar.bind(this)();
 
+    }
+
+    deletarInstancia(){
+        document.body.removeChild( this.drawCanvas );
+        document.body.removeChild( this.previewCanvas );
+        document.body.removeChild( this.divFerramentas );
     }
 
     criarEventos(){
