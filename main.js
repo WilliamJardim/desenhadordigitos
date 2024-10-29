@@ -171,6 +171,15 @@ class Editor{
 
     }
 
+    mudarPosicao(top, left){
+        this.drawCanvas.style.top = String(top) + 'px';
+        this.drawCanvas.style.left = String(left) + 'px';
+        this.previewCanvas.style.top = String(top) + 'px';
+        this.previewCanvas.style.left = String(left) + 'px';
+        this.divFerramentas.style.top = `${ top + 180 + parseInt(this.divFerramentas.style.height) }px`;
+        this.divFerramentas.style.left = `${ left }px`;
+    }
+
     mudarResolucaoCanvas( novaResolucao ){
         this.resolucao = novaResolucao;
         this.drawCanvas.style.width = String(novaResolucao) + 'px';
@@ -407,8 +416,8 @@ class Editor{
 
 const editor = new Editor({
     resolucao: 300,
-    top :window.innerHeight/2,
-    left: window.innerWidth/2,
+    top: 100,
+    left: 100,
 
     //Configurações iniciais do cursor
     cursor: {
