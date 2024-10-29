@@ -575,9 +575,9 @@ const editor = new Editor({
     cursor: {
         X: 0,
         Y: 0,
-        width: 10,
-        height: 10,
-        insertionRate: 5, //Será inserido 5% do width e height do cursor na matrix, isso afeta a espessura de cada pixel 
+        width: 3,
+        height: 3,
+        insertionRate: 2, //Será inserido 5% do width e height do cursor na matrix, isso afeta a espessura de cada pixel 
         opacity: 0.4,
         forcaBorracha: 0.5
     },
