@@ -9,7 +9,8 @@ class Editor{
                 Y: 0,
                 width: 10,
                 height: 10,
-                opacity: 0.4
+                opacity: 0.4,
+                forcaBorracha: 0.5
             };
 
         }else{
@@ -19,6 +20,7 @@ class Editor{
             if( !config.cursor.width ){ config.cursor.width = 10 };
             if( !config.cursor.height ){ config.cursor.height = 10 };
             if( !config.cursor.opacity ){ config.cursor.opacity = 0.4 };
+            if( !config.cursor.forcaBorracha ){ config.cursor.forcaBorracha = 0.5 };
         }
 
         this.resolucao                   = config.resolucao;
@@ -67,7 +69,8 @@ class Editor{
             opacity: config.cursor.opacity || 0.4,
             ativo: false,
             desenhando: false,
-            apagando: false
+            apagando: false,
+            forcaBorracha: config.cursor.forcaBorracha || 0.5
         };
 
         //Cria uma imagem base
@@ -151,6 +154,7 @@ class Editor{
         previewContext.fillStyle = `rgba(0,0,0, ${cursor.opacity})`;
         previewContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
+        //Ao desenhar
         if( cursor.ativo == true && cursor.desenhando == true ){
             previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
 
@@ -161,6 +165,23 @@ class Editor{
             //Insere na matrix
             this.matrix[ cursor.X ][ cursor.Y ] += cursor.opacity;
             
+        }
+
+        //Ao apagar
+        if( cursor.ativo == true && cursor.apagando == true ){
+            previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
+
+            //Desenha na tela
+            const potenciaDeletar = cursor.forcaBorracha * (cursor.opacity + cursor.forcaBorracha);
+
+            drawContext.fillStyle = `rgba(255,255,255, ${ potenciaDeletar })`;
+            drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
+
+            //Insere na matrix
+            this.matrix[ cursor.X ][ cursor.Y ] -= potenciaDeletar;
+
+            //Não permite que o valor do pixel seja menor do que zero
+            if( this.matrix[ cursor.X ][ cursor.Y ] < 0 ){ this.matrix[ cursor.X ][ cursor.Y ] = 0 };
         }
 
         //Cria um loop infinito
@@ -237,6 +258,7 @@ const editor = new Editor({
         Y: 0,
         width: 10,
         height: 10,
-        opacity: 0.4
+        opacity: 0.4,
+        forcaBorracha: 0.5
     }
 });
