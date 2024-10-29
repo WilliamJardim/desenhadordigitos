@@ -1,5 +1,7 @@
 class Editor{
     constructor( config={} ){
+        this.titulo = config.titulo || '';
+
         //Callbacks
         this.callbackEnviar = config.onEnviar || null;
 
@@ -72,6 +74,27 @@ class Editor{
         document.body.prepend(this.drawCanvas);
         document.body.prepend(this.previewCanvas);
 
+        //DIV para os titulos 
+        this.divTitulo = document.createElement('div');
+        this.divTitulo.style.position = 'absolute';
+        document.body.prepend(this.divTitulo);
+        this.divTitulo.style.width  = `${this.resolucao}px`;
+        this.divTitulo.style.height = `100px`;
+
+        let contexto = this;
+        setTimeout(function(){
+            contexto.divTitulo.style.top = `${ (contexto.top - 200) + parseInt(contexto.divTitulo.style.height) }px`;
+        }, 200);
+
+        this.divTitulo.style.left = `${ this.left }px`;
+        this.divTitulo.style.backgroundColor = 'white'
+        this.divTitulo.style.zIndex = 1;
+
+        this.divTitulo.innerHTML = `
+            <h1> ${ this.titulo || '' } </h1>    
+        `;
+
+
         //DIV para os botões 
         this.divFerramentas = document.createElement('div');
         this.divFerramentas.style.position = 'absolute';
@@ -79,7 +102,6 @@ class Editor{
         this.divFerramentas.style.width  = `${this.resolucao}px`;
         this.divFerramentas.style.height = `150px`;
 
-        let contexto = this;
         setTimeout(function(){
             contexto.divFerramentas.style.top = `${ contexto.top + 180 + parseInt(contexto.divFerramentas.style.height) }px`;
         }, 200);
@@ -151,7 +173,7 @@ class Editor{
             this.botaoEnviarImagem.style.color = 'white';
             this.botaoEnviarImagem.style.fontSize = '20pt';
             this.botaoEnviarImagem.onclick = function(){
-                contexto.callbackEnviar.bind(contexto)( contexto.getImage() );
+                contexto.callbackEnviar.bind(contexto)( contexto.getImage(), contexto );
                 contexto.mudarResolucaoCanvas( contexto.resolucaoInicial );
                 contexto.clearImage();
                 if( contexto.config.deletarAposEnvio ){
@@ -444,6 +466,7 @@ const editor = new Editor({
     resolucao: 300,
     top: 100,
     left: 100,
+    titulo: 'Desenhe a letra W',
 
     //Configurações iniciais do cursor
     cursor: {
