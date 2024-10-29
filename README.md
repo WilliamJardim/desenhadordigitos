@@ -1,3 +1,5 @@
+![Icone](images/Icon1-256x256.webp)
+
 # desenhadordigitos
 Permite desenhar digitos escritos a mao
 
