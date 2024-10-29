@@ -154,6 +154,9 @@ class Editor{
                 contexto.callbackEnviar.bind(contexto)( contexto.getImage() );
                 contexto.mudarResolucaoCanvas( contexto.resolucaoInicial );
                 contexto.clearImage();
+                if( contexto.config.deletarAposEnvio ){
+                    contexto.deletarInstancia();
+                }
             }
         }
 
@@ -462,6 +465,8 @@ const editor = new Editor({
     },
 
     //Quando o usuário enviar o desenho
+    deletarAposEnvio: false,
+    
     onEnviar: function( desenho ){
         console.log(desenho);
     }
