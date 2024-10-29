@@ -5,10 +5,21 @@ class Editor{
         this.drawCanvas                  = document.createElement('canvas');
         this.drawCanvas.setAttribute('id', String(new Date().getTime()));
         this.drawCanvas.setAttribute('class', 'canvas-draw');
+        this.drawCanvas.style.position = "absolute";
+        this.drawCanvas.style.top = "0px";
+        this.drawCanvas.style.left = "0px";
+        this.drawCanvas.style.zIndex = 1;
+        this.drawCanvas.style.border = "solid 4px black";
 
         this.previewCanvas               = document.createElement('canvas');
         this.previewCanvas.setAttribute('id', String(new Date().getTime()));
         this.previewCanvas.setAttribute('class', 'canvas-preview');
+        this.previewCanvas.style.position = "absolute";
+        this.previewCanvas.style.top = "0px";
+        this.previewCanvas.style.left = "0px";
+        this.previewCanvas.style.zIndex = 22;
+        this.previewCanvas.style.border = "solid 4px black";
+        this.previewCanvas.style.backgroundColor = "rgba(0,0,0,0)";
 
         document.body.prepend(this.drawCanvas);
         document.body.prepend(this.previewCanvas);
