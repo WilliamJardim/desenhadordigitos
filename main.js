@@ -9,6 +9,7 @@ class Editor{
                 Y: 0,
                 width: 10,
                 height: 10,
+                insertionRate: 100, //100% do width e height do cursor
                 opacity: 0.4,
                 forcaBorracha: 0.5
             };
@@ -19,6 +20,7 @@ class Editor{
             if( !config.cursor.Y ){ config.cursor.Y = 0 };
             if( !config.cursor.width ){ config.cursor.width = 10 };
             if( !config.cursor.height ){ config.cursor.height = 10 };
+            if( !config.cursor.insertionRate ){ config.cursor.insertionRate = 100 };
             if( !config.cursor.opacity ){ config.cursor.opacity = 0.4 };
             if( !config.cursor.forcaBorracha ){ config.cursor.forcaBorracha = 0.5 };
         }
@@ -80,6 +82,7 @@ class Editor{
             Y: config.cursor.Y || 0,
             width: config.cursor.width || 10,
             height: config.cursor.height || 10,
+            insertionRate: config.cursor.insertionRate || 100,
             opacity: config.cursor.opacity || 0.4,
             ativo: false,
             desenhando: false,
@@ -109,8 +112,8 @@ class Editor{
         });
         this.previewCanvas.addEventListener('mouseleave', function(e){
             context.cursor.ativo = false;
-            context.cursor.desenhando = false;
-            context.cursor.apagando = false;
+            //context.cursor.desenhando = false;
+            //context.cursor.apagando = false;
         });
         //Quando prescionar botão do mouse
         this.previewCanvas.addEventListener('mousedown', function(evento){
@@ -166,22 +169,43 @@ class Editor{
         if( this.matrix[ X ][ Y ] < this.limites.decremento ){   this.matrix[ X ][ Y ] = this.limites.decremento };
     }
 
-    setMatrix( X, Y, valor ){
-        //Insere na matrix
-        this.matrix[ X ][ Y ] = valor;
+    // Função para verificar os limites da matriz
+    estaDentroDosLimitesMatrix(X, Y) {
+        return X >= 0 && X < this.matrix.length && Y >= 0 && Y < this.matrix[0].length;
+    }
+
+    //Define um ponto na matrix resultante
+    setMatrix( X, Y, valor, preencherWidth, preencherHeight ){
+        // Insere o valor inicial na posição (X, Y)
+        this.matrix[X][Y] = valor;
+
+        const porcentagem = this.cursor.insertionRate/100;
+
+        // Preenche a área especificada a partir do ponto de origem
+        for (let i = 0; i < (porcentagem * preencherWidth); i++) {
+            for (let j = 0; j < (porcentagem * preencherHeight); j++) {
+                let novoX = X + i;
+                let novoY = Y + j;
+
+                // Verifica se estamos dentro dos limites da matriz
+                if (this.estaDentroDosLimitesMatrix(novoX, novoY)) {
+                    this.matrix[novoX][novoY] = valor;
+                }
+            }
+        }
+        
+        // Limita valores, caso precise realizar outra operação após o preenchimento
         this.limitar(X, Y);
     }
 
-    somarMatrix( X, Y, valor ){
+    somarMatrix( X, Y, valor, preencherWidth, preencherHeight ){
         //Insere na matrix
-        this.matrix[ X ][ Y ] += valor;
-        this.limitar(X, Y);
+        this.setMatrix( X, Y, (this.matrix[ X ][ Y ] + valor), preencherWidth, preencherHeight );
     }
 
-    subtrairMatrix( X, Y, valor ){
+    subtrairMatrix( X, Y, valor, preencherWidth, preencherHeight ){
         //Insere na matrix
-        this.matrix[ X ][ Y ] -= valor;
-        this.limitar(X, Y);
+        this.setMatrix( X, Y, (this.matrix[ X ][ Y ] - valor), preencherWidth, preencherHeight );
     }
 
     onDesenhar(){
@@ -204,7 +228,11 @@ class Editor{
             drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
             //Insere na matrix
-            this.somarMatrix( cursor.X, cursor.Y, cursor.opacity );
+            this.somarMatrix( cursor.X, 
+                              cursor.Y, 
+                              cursor.opacity, 
+                              cursor.width, 
+                              cursor.height );
             
         }
 
@@ -219,7 +247,11 @@ class Editor{
             drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
             //Insere na matrix
-            this.subtrairMatrix( cursor.X, cursor.Y, cursor.opacity );
+            this.subtrairMatrix( cursor.X, 
+                                 cursor.Y, 
+                                 cursor.opacity, 
+                                 cursor.width, 
+                                 cursor.height );
         }
 
         //Cria um loop infinito
@@ -260,7 +292,7 @@ class Editor{
         const previewContext  = this.previewCanvasRef.getContext('2d');
         
         previewContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
-        drawContext.clearRect(0,0, parseInt(this.previewCanvasRef.style.width), parseInt(this.previewCanvasRef.style.height) );
+        drawContext.clearRect(0,0, parseInt(this.drawCanvasRef.style.width), parseInt(this.drawCanvasRef.style.height) );
 
         for( let linha = 0 ; linha < imageWidth ; linha++ ){
             for( let coluna = 0 ; coluna < imageHeight ; coluna++ ){
@@ -295,8 +327,8 @@ class Editor{
 }
 
 const editor = new Editor({
-    resolucao: 512,
-    top: 0,
+    resolucao: 300,
+    top :window.innerHeight/2,
     left: window.innerWidth/2,
 
     //Configurações iniciais do cursor
@@ -305,6 +337,7 @@ const editor = new Editor({
         Y: 0,
         width: 10,
         height: 10,
+        insertionRate: 5, //Será inserido 5% do width e height do cursor na matrix, isso afeta a espessura de cada pixel 
         opacity: 0.4,
         forcaBorracha: 0.5
     },
