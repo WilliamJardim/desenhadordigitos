@@ -41,6 +41,7 @@ class Editor{
         this.valorFundo = config.valorFundo || 0;
 
         this.resolucao                   = config.resolucao;
+        this.resolucaoInicial            = config.resolucao;
         this.top                         = config.top  || 0;
         this.left                        = config.left || 0;
 
@@ -129,6 +130,7 @@ class Editor{
         this.botaoExcluirImagem.style.color = 'white';
         this.botaoExcluirImagem.style.fontSize = '20pt';
         this.botaoExcluirImagem.onclick = function(){
+            contexto.mudarResolucaoCanvas( contexto.resolucaoInicial );
             contexto.clearImage();
         }
 
@@ -167,6 +169,14 @@ class Editor{
 
         this.onDesenhar.bind(this)();
 
+    }
+
+    mudarResolucaoCanvas( novaResolucao ){
+        this.resolucao = novaResolucao;
+        this.drawCanvas.style.width = String(novaResolucao) + 'px';
+        this.drawCanvas.style.height = String(novaResolucao) + 'px';
+        this.previewCanvas.style.width = String(novaResolucao) + 'px';
+        this.previewCanvas.style.height = String(novaResolucao) + 'px';
     }
 
     deletarInstancia(){
