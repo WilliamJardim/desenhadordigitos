@@ -2,6 +2,25 @@ class Editor{
     constructor( config={} ){
         if( !config.resolucao ){ throw 'propriedade "resolucao" é obrigatória!' };
 
+        if( config.cursor == undefined ){
+            //Cursor com tudo padrão 
+            config.cursor = {
+                X: 0,
+                Y: 0,
+                width: 10,
+                height: 10,
+                opacity: 0.4
+            };
+
+        }else{
+            //Cursor com alguns valores padrão 
+            if( !config.cursor.X ){ config.cursor.X = 0 };
+            if( !config.cursor.Y ){ config.cursor.Y = 0 };
+            if( !config.cursor.width ){ config.cursor.width = 10 };
+            if( !config.cursor.height ){ config.cursor.height = 10 };
+            if( !config.cursor.opacity ){ config.cursor.opacity = 0.4 };
+        }
+
         this.resolucao                   = config.resolucao;
         this.top                         = config.top  || 0;
         this.left                        = config.left || 0;
@@ -14,6 +33,7 @@ class Editor{
         this.drawCanvas.style.left = `${ this.left }px`;
         this.drawCanvas.style.zIndex = 1;
         this.drawCanvas.style.border = "solid 4px black";
+        this.drawCanvas.setAttribute("oncontextmenu", "return false");
 
         this.previewCanvas               = document.createElement('canvas');
         this.previewCanvas.setAttribute('id', String(new Date().getTime()));
@@ -24,6 +44,7 @@ class Editor{
         this.previewCanvas.style.zIndex = 22;
         this.previewCanvas.style.border = "solid 4px black";
         this.previewCanvas.style.backgroundColor = "rgba(0,0,0,0)";
+        this.previewCanvas.setAttribute("oncontextmenu", "return false");
 
         document.body.prepend(this.drawCanvas);
         document.body.prepend(this.previewCanvas);
@@ -39,11 +60,11 @@ class Editor{
 
         //Mouse
         this.cursor = {
-            X: 0,
-            Y: 0,
-            width: 10,
-            height: 10,
-            opacity: 0.4,
+            X: config.cursor.X || 0,
+            Y: config.cursor.Y || 0,
+            width: config.cursor.width || 10,
+            height: config.cursor.height || 10,
+            opacity: config.cursor.opacity || 0.4,
             ativo: false,
             desenhando: false
         };
@@ -182,5 +203,14 @@ class Editor{
 const editor = new Editor({
     resolucao: 512,
     top: 0,
-    left: window.innerWidth/2
+    left: window.innerWidth/2,
+
+    //Configurações iniciais do cursor
+    cursor: {
+        X: 0,
+        Y: 0,
+        width: 10,
+        height: 10,
+        opacity: 0.4
+    }
 });
