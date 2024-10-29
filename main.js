@@ -66,7 +66,8 @@ class Editor{
             height: config.cursor.height || 10,
             opacity: config.cursor.opacity || 0.4,
             ativo: false,
-            desenhando: false
+            desenhando: false,
+            apagando: false
         };
 
         //Cria uma imagem base
@@ -91,12 +92,37 @@ class Editor{
         });
         this.previewCanvas.addEventListener('mouseleave', function(e){
             context.cursor.ativo = false;
-        });
-        this.previewCanvas.addEventListener('mousedown', function(e){
-            context.cursor.desenhando = true;
-        });
-        this.previewCanvas.addEventListener('mouseup', function(e){
             context.cursor.desenhando = false;
+            context.cursor.apagando = false;
+        });
+        //Quando prescionar botão do mouse
+        this.previewCanvas.addEventListener('mousedown', function(evento){
+            //Botao esquerdo
+            if (evento.button === 0) {
+                context.cursor.desenhando = true;
+
+            //Botao do meio
+            }else if (evento.button === 1) {
+                
+            //Botao direito
+            } else if (evento.button === 2) {
+                context.cursor.apagando = true;
+            }
+
+        });
+        //Quando soltar botão do mouse
+        this.previewCanvas.addEventListener('mouseup', function(evento){
+            //Botao esquerdo
+            if (evento.button === 0) {
+                context.cursor.desenhando = false;
+
+            //Botao do meio
+            }else if (evento.button === 1) {
+                
+            //Botao direito
+            } else if (evento.button === 2) {
+                context.cursor.apagando = false;
+            }
         });
         this.previewCanvas.addEventListener('mousemove', function(e){
             const rect = context.previewCanvas.getBoundingClientRect();
