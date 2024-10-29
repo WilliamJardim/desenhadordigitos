@@ -310,6 +310,30 @@ class Editor{
         return X >= 0 && X < this.matrix.length && Y >= 0 && Y < this.matrix[0].length;
     }
 
+    //Redimenciona uma matrix
+    resizeMatrix(matrix, oldSize, newSize) {
+        const scale = oldSize / newSize;
+        const newMatrix = Array.from({ length: newSize }, () => Array(newSize).fill(0));
+    
+        for (let i = 0; i < newSize; i++) {
+            for (let j = 0; j < newSize; j++) {
+                let sum = 0;
+    
+                // Calcula a média dos pixels no bloco 5x5
+                for (let x = 0; x < scale; x++) {
+                    for (let y = 0; y < scale; y++) {
+                        sum += matrix[i * scale + x][j * scale + y];
+                    }
+                }
+    
+                // Atribui a média para a posição (i, j) na nova matriz
+                newMatrix[i][j] = sum / (scale * scale);
+            }
+        }
+    
+        return newMatrix;
+    }
+
     //Define um ponto na matrix resultante
     setMatrix( X, Y, valor, preencherWidth, preencherHeight ){
         if( this.matrix[X] == undefined ){return}; //Evita erros 
@@ -462,8 +486,14 @@ class Editor{
         }
     }
 
+    //Obtem a imagem original
     getImage(){
         return this.matrix;
+    }
+
+    //Obtem a imagem redimensionada para uma resolução especifica
+    getResizedImage( novaResolucao = 100 ){
+        return this.resizeMatrix(this.getImage(), this.resolucao, novaResolucao);
     }
 
     getCursor(){
