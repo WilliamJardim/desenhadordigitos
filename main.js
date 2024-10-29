@@ -157,15 +157,30 @@ class Editor{
         });
     }
 
-    setMatrix( X, Y, valor ){
-        //Insere na matrix
-        this.matrix[ X ][ Y ] = valor;
-
+    limitar( X, Y ){
         //Não permite que o valor do pixel seja maior do que o valor limite
         if( this.matrix[ X ][ Y ] >= this.limites.crescimento ){ this.matrix[ X ][ Y ] = this.limites.crescimento };
 
         //Não permite que o valor do pixel seja menor do que zero
         if( this.matrix[ X ][ Y ] < this.limites.decremento ){   this.matrix[ X ][ Y ] = this.limites.decremento };
+    }
+
+    setMatrix( X, Y, valor ){
+        //Insere na matrix
+        this.matrix[ X ][ Y ] = valor;
+        this.limitar(X, Y);
+    }
+
+    somarMatrix( X, Y, valor ){
+        //Insere na matrix
+        this.matrix[ X ][ Y ] += valor;
+        this.limitar(X, Y);
+    }
+
+    subtrairMatrix( X, Y, valor ){
+        //Insere na matrix
+        this.matrix[ X ][ Y ] -= valor;
+        this.limitar(X, Y);
     }
 
     onDesenhar(){
@@ -188,10 +203,7 @@ class Editor{
             drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
             //Insere na matrix
-            this.matrix[ cursor.X ][ cursor.Y ] += cursor.opacity;
-
-            //Não permite que o valor do pixel seja maior do que o valor limite
-            if( this.matrix[ cursor.X ][ cursor.Y ] > this.limites.crescimento ){ this.matrix[ cursor.X ][ cursor.Y ] = this.limites.crescimento };
+            this.somarMatrix( cursor.X, cursor.Y, cursor.opacity );
             
         }
 
@@ -206,10 +218,7 @@ class Editor{
             drawContext.fillRect(cursor.X, cursor.Y, cursor.width, cursor.height);
 
             //Insere na matrix
-            this.matrix[ cursor.X ][ cursor.Y ] -= potenciaDeletar;
-
-            //Não permite que o valor do pixel seja menor do que zero
-            if( this.matrix[ cursor.X ][ cursor.Y ] < this.limites.decremento ){ this.matrix[ cursor.X ][ cursor.Y ] = this.limites.decremento };
+            this.subtrairMatrix( cursor.X, cursor.Y, cursor.opacity );
         }
 
         //Cria um loop infinito
