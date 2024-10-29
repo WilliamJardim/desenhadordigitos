@@ -312,6 +312,8 @@ class Editor{
 
     //Define um ponto na matrix resultante
     setMatrix( X, Y, valor, preencherWidth, preencherHeight ){
+        if( this.matrix[X] == undefined ){return}; //Evita erros 
+
         // Insere o valor inicial na posição (X, Y)
         this.matrix[X][Y] = valor;
 
@@ -335,17 +337,21 @@ class Editor{
     }
 
     somarMatrix( X, Y, valor, preencherWidth, preencherHeight ){
+        if( this.matrix[X] == undefined ){return}; //Evita erros 
+
         //Insere na matrix
         this.setMatrix( X, Y, (this.matrix[ X ][ Y ] + valor), preencherWidth, preencherHeight );
     }
 
     subtrairMatrix( X, Y, valor, preencherWidth, preencherHeight ){
+        if( this.matrix[X] == undefined ){return}; //Evita erros 
+
         //Insere na matrix
         this.setMatrix( X, Y, (this.matrix[ X ][ Y ] - valor), preencherWidth, preencherHeight );
     }
 
     onDesenhar(){
-
+        
         const cursor          = this.getCursor();
         const drawContext     = this.drawCanvasRef.getContext('2d');
         const previewContext  = this.previewCanvasRef.getContext('2d');
@@ -463,7 +469,7 @@ class Editor{
 }
 
 const editor = new Editor({
-    resolucao: 300,
+    resolucao: 200,
     top: 100,
     left: 100,
     titulo: 'Desenhe a letra W',
@@ -472,8 +478,8 @@ const editor = new Editor({
     cursor: {
         X: 0,
         Y: 0,
-        width: 10,
-        height: 10,
+        width: 5,
+        height: 5,
         insertionRate: 5, //Será inserido 5% do width e height do cursor na matrix, isso afeta a espessura de cada pixel 
         opacity: 0.4,
         forcaBorracha: 0.5
