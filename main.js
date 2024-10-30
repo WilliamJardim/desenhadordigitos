@@ -1,6 +1,7 @@
 class Editor{
     constructor( config={} ){
         this.titulo = config.titulo || '';
+        this.backgroundColor = config.backgroundColor || 'rgb(0,0,0)';
 
         //Callbacks
         this.callbackEnviar = config.onEnviar || null;
@@ -188,6 +189,7 @@ class Editor{
         this.drawCanvas.style.height     = `${this.resolucao}px`;
         this.previewCanvas.style.width   = `${this.resolucao}px`;
         this.previewCanvas.style.height  = `${this.resolucao}px`;
+        this.drawCanvas.style.backgroundColor = this.backgroundColor;
 
         this.matrix = [];
         this.previewCanvasRef = this.previewCanvas;
@@ -669,6 +671,7 @@ const editor = new Editor({
     top: 100,
     left: 100,
     titulo: 'Desenhe a letra W',
+    backgroundColor: 'rgb(0,0,0)',
 
     //Configurações iniciais do cursor
     cursor: {
