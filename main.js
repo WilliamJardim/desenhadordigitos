@@ -686,15 +686,10 @@ const editor = new Editor({
     },
 
     //Limita quais serão a faixa de valores dos pixels a serem desenhados
-    valorFundo: 0,
-
     limites: {
         crescimento: 1,
         decremento:  0
     },
-
-    //Quando o usuário enviar o desenho
-    deletarAposEnvio: false,
     
     onEnviar: function( desenho ){
         console.log(desenho);
